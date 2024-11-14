@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro</title>
+    <link rel="stylesheet" href="cadastro.css"> <!-- Focar que aqui é o link do meu CSS externo, sempre esqueço -->
+</head>
+<body>
+    <video autoplay muted loop class="background-video">
+        <source src="img/backvid.mp4" type="video/mp4"> 
+        Seu navegador não suporta vídeo.
+    </video>
+    <div class="container">
+        <h2>Cadastro</h2>
+        <form id="cadastro-form">
+            <label for="email">Email:</label>
+            <input type="email" id="email" placeholder="Digite seu email" required>
+
+            <label for="senha">Senha:</label>
+            <input type="password" id="senha" placeholder="Digite sua senha" required>
+
+            <button type="submit">Cadastrar</button>
+        </form>
+        <p>Já tem uma conta? <a href="login.html">Faça login</a></p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const cadastroForm = document.getElementById('cadastro-form');
+
+            // Função para obter usuários do localStorage (esse local é para que eu possa armazenar o user e senha direto no .js, obviamente usar só de teste
+            //Ideia principal seria cadastrar no Fire base)
+            function getUsers() {
+                const users = localStorage.getItem('users');
+                return users ? JSON.parse(users) : [];
+            }
+
+            // Aqui a Função já salva um usuário no localStorage
+            function saveUser(user) {
+                const users = getUsers();
+                users.push(user);
+                localStorage.setItem('users', JSON.stringify(users));
+            }
+
+            // Cadastro em sí
+            if (cadastroForm) {
+                cadastroForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const email = document.getElementById('email').value.toLowerCase(); // coloca td p/ minúsculas
+                    const senha = document.getElementById('senha').value;
+
+                    const users = getUsers();
+
+                    // Vê se o e-mail já está cadastrado
+                    const userExists = users.some(user => user.email === email);
+                    if (userExists) {
+                        alert('Este e-mail já está cadastrado! Tente um diferente.');
+                        return; // Aqui se o e-mail já cadastrado { impede o cadastro}
+                    }
+
+                    // Simula o registro do usuário no localStorage
+                    saveUser({ email, senha });
+
+                    // mandando para minha próxima tela, no caso indicando para minha tela de login
+                    window.location.href = 'login.html';
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+<!-- eu mesmo comentei viu Luan, aprendo melhor fazendo assim
+E outra, eu n tive paciencia de concertar o erro para colocar a verificação na minha ultima tela não.
+MAAAAS como pedido, a tela de cadastro tá na mão. 
+-->
+ 

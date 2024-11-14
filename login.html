@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="login.css"> 
+</head>
+<body>
+    <video autoplay muted loop class="background-video">
+        <source src="img\login.mp4" type="video/mp4"> 
+        Seu navegador não suporta vídeo.
+    </video>
+    <div class="container">
+        <h2>Login</h2>
+        <form id="login-form">
+            <label for="email-login">Email:</label>
+            <input type="email" id="email-login" placeholder="Digite seu email" required>
+
+            <label for="senha-login">Senha:</label>
+            <input type="password" id="senha-login" placeholder="Digite sua senha" required>
+
+            <button type="submit">Entrar</button>
+        </form>
+        <p>Ainda não tem uma conta? <a href="cadastro.html">Cadastre-se</a></p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginForm = document.getElementById('login-form');
+
+            // Função para opegar aquele usuários do localStorage que foi cadastrado antes
+            function getUsers() {
+                const users = localStorage.getItem('users');
+                return users ? JSON.parse(users) : [];
+            }
+
+            // Login
+            if (loginForm) {
+                loginForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const email = document.getElementById('email-login').value.toLowerCase(); // minúcula dnv
+                    const senha = document.getElementById('senha-login').value;
+
+                    const users = getUsers();
+
+                    // Verifica se o usuário existe
+                    const user = users.find(user => user.email === email && user.senha === senha);
+
+                    if (user) {
+                        alert('Login bem-sucedido!');
+                        window.location.href = 'logado.html'; // se ok, manda para próximo html
+                    } else {
+                        alert('E-mail ou senha incorretos!');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
